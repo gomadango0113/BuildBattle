@@ -130,25 +130,36 @@ public class GameManager {
 
     public static void nextGame() {
         if (!build_players.isEmpty()) {
-            //ランダムに建築物を選別
-            Collections.shuffle(build_list);
-            now_build = build_list.get(0);
-            build_list.remove(now_build);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    //ランダムに建築物を選別
+                    Collections.shuffle(build_list);
+                    now_build = build_list.get(0);
+                    build_list.remove(now_build);
 
-            //ランダムにプレイヤーを選別
-            List<OfflinePlayer> build_player_list = new ArrayList<>(build_players);
-            Collections.shuffle(build_player_list);
-            for (OfflinePlayer player : build_player_list) {
-                if (player.isOnline() && player instanceof Player) {
-                    now_build_player = player.getPlayer();
-                    build_players.remove(player);
+                    //ランダムにプレイヤーを選別
+                    List<OfflinePlayer> build_player_list = new ArrayList<>(build_players);
+                    Collections.shuffle(build_player_list);
+                    for (OfflinePlayer player : build_player_list) {
+                        if (player.isOnline() && player instanceof Player) {
+                            now_build_player = player.getPlayer();
+                            build_players.remove(player);
 
-                    ChatUtil.sendMessage(now_build_player, "あなたが建築するものは" + now_build.getName()  +"です。");
-                    break;
+                            now_build_player.teleport(LocationManager.getBuildSpawn());
+                            ChatUtil.sendMessage(now_build_player, "あなたが建築するものは" + now_build.getName()  +"です。");
+                            break;
+                        }
+                    }
+
+                    build_time=20;
                 }
-            }
-
-            build_time=20;
+            }.runTask(BuildBattle.getInstance());
+        }
+        else {
+            ChatUtil.sendGlobalMessage("ゲーム終了です。");
+            task.cancel();
+            task = null;
         }
     }
 

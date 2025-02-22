@@ -13,6 +13,7 @@ public final class BuildBattle extends JavaPlugin {
         registerCommand();
         registerListener();
         ScoreboardManager.setScoreboard(0);
+        saveDefaultConfig();
 
         getLogger().info("[BuildBattle] プラグインの準備ができました。");
     }

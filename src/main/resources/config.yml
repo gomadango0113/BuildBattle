@@ -1,0 +1,18 @@
+location:
+  lobby:
+    x:
+    y:
+    z:
+  build_spawn:
+    x:
+    y:
+    z:
+  build_arena:
+    start:
+      x:
+      y:
+      z:
+    end:
+      x:
+      y:
+      z:
