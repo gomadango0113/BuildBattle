@@ -40,10 +40,11 @@ public class GameManager {
                         if (count_time[0] == 0) {
                             ChatUtil.sendGlobalMessage("ゲームスタート!");
 
+                            ScoreboardManager.setScoreboard(1);
                             status = GameStatus.RUNNING;
                         }
                         else {
-                            ChatUtil.sendGlobalMessage("ゲーム開始まであと" + count_time[0]-- + "秒!");
+                            ChatUtil.sendGlobalMessage("ゲーム開始まであと" + count_time[0] + "秒!");
 
                             count_time[0]--;
                         }
