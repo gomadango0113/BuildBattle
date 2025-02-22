@@ -2,6 +2,7 @@ package org.gomadango0113.buildbattle;
 
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.gomadango0113.buildbattle.command.GameStartCommand;
 import org.gomadango0113.buildbattle.manager.ScoreboardManager;
 
 public final class BuildBattle extends JavaPlugin {
@@ -21,7 +22,7 @@ public final class BuildBattle extends JavaPlugin {
     }
 
     private void registerCommand() {
-
+        getCommand("buildbattle_start").setExecutor(new GameStartCommand());
     }
 
     private void registerListener() {
