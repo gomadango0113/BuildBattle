@@ -1,4 +1,9 @@
 name: Build_Battle
 version: '${project.version}'
-main: org.gomadango0113.buildbattle.Build_Battle
+main: org.gomadango0113.buildbattle.BuildBattle
 api-version: '1.20'
+
+commands:
+  buildbattle_start:
+    description: ゲームを開始させるコマンド
+    permission: buildbattle.command.game_start
