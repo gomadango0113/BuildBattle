@@ -1,9 +1,6 @@
 package org.gomadango0113.buildbattle.manager;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -85,6 +82,14 @@ public class GameManager {
                             }
                         }
                         else {
+                            if (now_build_player != null) {
+                                Location loc = now_build_player.getLocation();
+                                if (!LocationManager.isBuildArena(loc)) {
+                                    Location build_spawn = LocationManager.getBuildSpawn();
+                                    now_build_player.teleport(build_spawn);
+                                }
+                            }
+
                             build_time--;
                         }
                     }
