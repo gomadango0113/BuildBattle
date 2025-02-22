@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.gomadango0113.buildbattle.BuildBattle;
 import org.gomadango0113.buildbattle.util.ChatUtil;
 
+import java.io.IOException;
 import java.util.*;
 
 public class GameManager {
@@ -16,6 +17,8 @@ public class GameManager {
     private static int build_time;
     private static Player now_build_player;
     private static Set<OfflinePlayer> build_players;
+    private static BuildManager.Build now_build;
+    private static List<BuildManager.Build> build_list;
 
     //ゲーム
     private static GameStatus status;
@@ -27,6 +30,21 @@ public class GameManager {
 
         status = GameStatus.WAITING;
         build_time = 20;
+
+        try {
+            List<BuildManager.Build> get_build_list = BuildManager.getBuildList();
+            if (get_build_list.isEmpty()) {
+                build_list = BuildManager.getDefaultBuildList();
+                Bukkit.getLogger().warning("[BuildBattle] JSONを取得できなかったため、デフォルトのビルドが使用されます。");
+            }
+            else {
+                build_list = new ArrayList<>(get_build_list);
+            }
+        }
+        catch (IOException e) {
+            Bukkit.getLogger().warning("[BuildBattle] JSONを取得できなかったため、デフォルトのビルドが使用されます。");
+            build_list = BuildManager.getDefaultBuildList();
+        }
     }
 
     public static void startGame() {
@@ -93,13 +111,20 @@ public class GameManager {
     }
 
     public static void nextGame() {
-        //ランダムにプレイヤーを選別
-        List<OfflinePlayer> build_list = new ArrayList<>(build_players);
+        //ランダムに建築物を選別
         Collections.shuffle(build_list);
-        for (OfflinePlayer player : build_list) {
+        now_build = build_list.get(0);
+        build_list.remove(now_build);
+
+        //ランダムにプレイヤーを選別
+        List<OfflinePlayer> build_player_list = new ArrayList<>(build_players);
+        Collections.shuffle(build_player_list);
+        for (OfflinePlayer player : build_player_list) {
             if (player.isOnline() && player instanceof Player) {
                 now_build_player = player.getPlayer();
                 build_players.remove(player);
+
+                ChatUtil.sendMessage(now_build_player, "あなたが建築するものは" + now_build.getName()  +"です。");
                 break;
             }
         }
