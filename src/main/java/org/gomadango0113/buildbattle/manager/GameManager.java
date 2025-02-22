@@ -120,6 +120,14 @@ public class GameManager {
         return now_build_player;
     }
 
+    public static List<BuildManager.Build> getBuildList() {
+        return build_list;
+    }
+
+    public static BuildManager.Build getBuild() {
+        return now_build;
+    }
+
     public static void nextGame() {
         if (!build_players.isEmpty()) {
             //ランダムに建築物を選別

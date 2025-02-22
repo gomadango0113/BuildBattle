@@ -3,6 +3,7 @@ package org.gomadango0113.buildbattle;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gomadango0113.buildbattle.command.GameStartCommand;
+import org.gomadango0113.buildbattle.listener.PlayerChatListener;
 import org.gomadango0113.buildbattle.manager.ScoreboardManager;
 
 public final class BuildBattle extends JavaPlugin {
@@ -27,6 +28,8 @@ public final class BuildBattle extends JavaPlugin {
 
     private void registerListener() {
         PluginManager plm = getServer().getPluginManager();
+
+        plm.registerEvents(new PlayerChatListener(), this);
     }
 
     public static BuildBattle getInstance() {
