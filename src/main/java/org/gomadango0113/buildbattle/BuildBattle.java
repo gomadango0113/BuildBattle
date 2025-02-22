@@ -2,6 +2,7 @@ package org.gomadango0113.buildbattle;
 
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.gomadango0113.buildbattle.manager.ScoreboardManager;
 
 public final class BuildBattle extends JavaPlugin {
 
@@ -9,6 +10,7 @@ public final class BuildBattle extends JavaPlugin {
     public void onEnable() {
         registerCommand();
         registerListener();
+        ScoreboardManager.setScoreboard(0);
 
         getLogger().info("[BuildBattle] プラグインの準備ができました。");
     }
