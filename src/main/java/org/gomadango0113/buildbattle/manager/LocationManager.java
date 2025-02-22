@@ -1,8 +1,11 @@
 package org.gomadango0113.buildbattle.manager;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.gomadango0113.buildbattle.BuildBattle;
 
 public class LocationManager {
@@ -53,6 +56,31 @@ public class LocationManager {
             return new Location(world, x, y, z);
         }
         return null;
+    }
+
+    public static void fillBlock(Material material, Location start, Location end) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                int min_x = Math.min(start.getBlockX(), end.getBlockX());
+                int max_x = Math.max(start.getBlockX(), end.getBlockX());
+
+                int min_y = Math.min(start.getBlockY(), end.getBlockY());
+                int max_y = Math.max(start.getBlockY(), end.getBlockY());
+
+                int min_z = Math.min(start.getBlockZ(), end.getBlockZ());
+                int max_z = Math.max(start.getBlockZ(), end.getBlockZ());
+
+                for (int x = min_x; x <= max_x; x++) {
+                    for (int y = min_y; y <= max_y; y++) {
+                        for (int z = min_z; z <= max_z; z++) {
+                            Location fill_loc = new Location(GameManager.getWorld(), x, y, z);
+                            fill_loc.getBlock().setType(material, true);
+                        }
+                    }
+                }
+            }
+        }.runTask(BuildBattle.getInstance());
     }
 
     public static boolean isBuildArena(Location loc) {

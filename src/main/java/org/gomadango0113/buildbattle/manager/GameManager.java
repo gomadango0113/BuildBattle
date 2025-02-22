@@ -1,6 +1,7 @@
 package org.gomadango0113.buildbattle.manager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -53,7 +54,7 @@ public class GameManager {
 
     public static void startGame() {
         if (status == GameStatus.WAITING) {
-            final int[] count_time = {10};
+            final int[] count_time = {3};
             task = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -133,6 +134,9 @@ public class GameManager {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    //arena
+                    LocationManager.fillBlock(Material.AIR, LocationManager.getBuildStartArena(), LocationManager.getBuildEndArena());
+
                     //ランダムに建築物を選別
                     Collections.shuffle(build_list);
                     now_build = build_list.get(0);
