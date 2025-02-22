@@ -2,6 +2,7 @@ package org.gomadango0113.buildbattle.manager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -23,6 +24,7 @@ public class GameManager {
     //ゲーム
     private static GameStatus status;
     private static BukkitTask task;
+    private static World world;
 
     static {
         Collection<? extends Player> all_players = Bukkit.getOnlinePlayers();
@@ -30,6 +32,8 @@ public class GameManager {
 
         status = GameStatus.WAITING;
         build_time = 20;
+
+        world = Bukkit.getWorlds().get(0);
 
         try {
             List<BuildManager.Build> get_build_list = BuildManager.getBuildList();
@@ -69,9 +73,15 @@ public class GameManager {
                     }
                     else if (status == GameStatus.RUNNING){
                         if (build_time == 0) {
-                            ChatUtil.sendGlobalMessage("時間切れです。" + "\n" +
-                                    "次のゲームまでお待ちください。");
-                            nextGame();
+                            if (build_players.isEmpty()) {
+                                ChatUtil.sendGlobalMessage("ゲーム終了です。");
+                                this.cancel();
+                            }
+                            else {
+                                ChatUtil.sendGlobalMessage("時間切れです。" + "\n" +
+                                        "次のゲームまでお待ちください。");
+                                nextGame();
+                            }
                         }
                         else {
                             build_time--;
@@ -111,25 +121,35 @@ public class GameManager {
     }
 
     public static void nextGame() {
-        //ランダムに建築物を選別
-        Collections.shuffle(build_list);
-        now_build = build_list.get(0);
-        build_list.remove(now_build);
+        if (!build_players.isEmpty()) {
+            //ランダムに建築物を選別
+            Collections.shuffle(build_list);
+            now_build = build_list.get(0);
+            build_list.remove(now_build);
 
-        //ランダムにプレイヤーを選別
-        List<OfflinePlayer> build_player_list = new ArrayList<>(build_players);
-        Collections.shuffle(build_player_list);
-        for (OfflinePlayer player : build_player_list) {
-            if (player.isOnline() && player instanceof Player) {
-                now_build_player = player.getPlayer();
-                build_players.remove(player);
+            //ランダムにプレイヤーを選別
+            List<OfflinePlayer> build_player_list = new ArrayList<>(build_players);
+            Collections.shuffle(build_player_list);
+            for (OfflinePlayer player : build_player_list) {
+                if (player.isOnline() && player instanceof Player) {
+                    now_build_player = player.getPlayer();
+                    build_players.remove(player);
 
-                ChatUtil.sendMessage(now_build_player, "あなたが建築するものは" + now_build.getName()  +"です。");
-                break;
+                    ChatUtil.sendMessage(now_build_player, "あなたが建築するものは" + now_build.getName()  +"です。");
+                    break;
+                }
             }
-        }
 
-        build_time=20;
+            build_time=20;
+        }
+    }
+
+    public static World getWorld() {
+        return world;
+    }
+
+    public static void setWorld(World world) {
+        GameManager.world = world;
     }
 
     public enum GameStatus {
