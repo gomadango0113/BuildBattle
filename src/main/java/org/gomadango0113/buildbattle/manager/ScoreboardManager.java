@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -67,7 +68,7 @@ public class ScoreboardManager {
                 game_obj.getScore(" ").setScore(29);
                 // game_obj.getScore("残り時間： " + GameManager.game_time).setScore(28);
                 game_obj.getScore("  ").setScore(27);
-                game_obj.getScore("建築中のプレイヤー：").setScore(26);
+                game_obj.getScore( ChatColor.GOLD + "建築中のプレイヤー：").setScore(26);
                 //game_obj.getScore("").setScore(25);
                 game_obj.getScore("   ").setScore(22);
             }
@@ -91,10 +92,13 @@ public class ScoreboardManager {
         if (board_runnable == null) {
             new BukkitRunnable() {
                 String time = null;
-                String now_player = null;
+                String build_player_name = null;
+                String now_player_size = null;
                 @Override
                 public void run() {
                     if (GameManager.getStatus() == GameManager.GameStatus.RUNNING) {
+                        Player build_player = GameManager.getBuildPlayer();
+
                         //残り時間
                         if (time != null) {
                             game_obj.getScoreboard().resetScores(time);
@@ -102,14 +106,23 @@ public class ScoreboardManager {
                         time = (ChatColor.GOLD + "残り時間： " + stringTime(GameManager.getBuildTime()));
                         game_obj.getScore(time).setScore(28);
 
+                        if (build_player != null) {
+                            //建築中のプレイヤー
+                            if (build_player_name != null) {
+                                game_obj.getScoreboard().resetScores(build_player_name);
+                            }
+                            build_player_name = (build_player.getName());
+                            game_obj.getScore(build_player_name).setScore(25);
+                        }
+
                     }
                     else if (GameManager.getStatus() == GameManager.GameStatus.WAITING || GameManager.getStatus() == GameManager.GameStatus.COUNTING) {
                         //現在のプレイヤー
-                        if (now_player != null) {
-                            game_obj.getScoreboard().resetScores(now_player);
+                        if (now_player_size != null) {
+                            game_obj.getScoreboard().resetScores(now_player_size);
                         }
-                        now_player = (ChatColor.GOLD + "現在の人数：" + Bukkit.getOnlinePlayers().size());
-                        game_obj.getScore(now_player).setScore(26);
+                        now_player_size = (ChatColor.GOLD + "現在の人数：" + Bukkit.getOnlinePlayers().size());
+                        game_obj.getScore(now_player_size).setScore(26);
                     }
 
                     //スコアボードセット

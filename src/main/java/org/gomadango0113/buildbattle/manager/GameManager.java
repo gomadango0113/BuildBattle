@@ -8,9 +8,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.gomadango0113.buildbattle.BuildBattle;
 import org.gomadango0113.buildbattle.util.ChatUtil;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class GameManager {
 
@@ -28,6 +26,7 @@ public class GameManager {
         build_players = new HashSet<>(all_players);
 
         status = GameStatus.WAITING;
+        build_time = 20;
     }
 
     public static void startGame() {
@@ -40,6 +39,7 @@ public class GameManager {
                         if (count_time[0] == 0) {
                             ChatUtil.sendGlobalMessage("ゲームスタート!");
 
+                            nextGame();
                             ScoreboardManager.setScoreboard(1);
                             status = GameStatus.RUNNING;
                         }
@@ -50,7 +50,14 @@ public class GameManager {
                         }
                     }
                     else if (status == GameStatus.RUNNING){
-
+                        if (build_time == 0) {
+                            ChatUtil.sendGlobalMessage("時間切れです。" + "\n" +
+                                    "次のゲームまでお待ちください。");
+                            nextGame();
+                        }
+                        else {
+                            build_time--;
+                        }
                     }
                 }
             }.runTaskTimer(BuildBattle.getInstance(), 0L, 20L);
@@ -83,6 +90,21 @@ public class GameManager {
      */
     public static Player getBuildPlayer() {
         return now_build_player;
+    }
+
+    public static void nextGame() {
+        //ランダムにプレイヤーを選別
+        List<OfflinePlayer> build_list = new ArrayList<>(build_players);
+        Collections.shuffle(build_list);
+        for (OfflinePlayer player : build_list) {
+            if (player.isOnline() && player instanceof Player) {
+                now_build_player = player.getPlayer();
+                build_players.remove(player);
+                break;
+            }
+        }
+
+        build_time=20;
     }
 
     public enum GameStatus {
