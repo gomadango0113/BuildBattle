@@ -1,0 +1,4 @@
+name: Build_Battle
+version: '${project.version}'
+main: org.gomadango0113.buildbattle.Build_Battle
+api-version: '1.20'
