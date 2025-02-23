@@ -1,3 +1,7 @@
+rule:
+  place_size_rule: true
+  break_size_rule: true
+
 location:
   lobby:
     x:

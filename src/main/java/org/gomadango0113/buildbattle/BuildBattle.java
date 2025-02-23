@@ -4,6 +4,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gomadango0113.buildbattle.command.GameStartCommand;
 import org.gomadango0113.buildbattle.listener.BlockBreakListener;
+import org.gomadango0113.buildbattle.listener.BlockPlaceListener;
 import org.gomadango0113.buildbattle.listener.PlayerChatListener;
 import org.gomadango0113.buildbattle.listener.PlayerInteractListener;
 import org.gomadango0113.buildbattle.manager.ScoreboardManager;
@@ -34,6 +35,7 @@ public final class BuildBattle extends JavaPlugin {
 
         plm.registerEvents(new PlayerChatListener(), this);
         plm.registerEvents(new BlockBreakListener(), this);
+        plm.registerEvents(new BlockPlaceListener(), this);
         plm.registerEvents(new PlayerInteractListener(), this);
     }
 

@@ -30,7 +30,7 @@ public class GameManager {
         build_players = new HashSet<>(all_players);
 
         status = GameStatus.WAITING;
-        build_time = 20;
+        build_time = 60;
         default_build_time = build_time;
 
         world = Bukkit.getWorlds().get(0);
@@ -175,6 +175,9 @@ public class GameManager {
                             break;
                         }
                     }
+
+                    //ルール
+                    RuleManager.randomRule();
 
                     build_time=20;
                 }

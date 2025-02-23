@@ -8,9 +8,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.gomadango0113.buildbattle.manager.GameManager;
 import org.gomadango0113.buildbattle.manager.LocationManager;
+import org.gomadango0113.buildbattle.manager.RuleManager;
 import org.gomadango0113.buildbattle.util.ChatUtil;
 
 public class BlockBreakListener implements Listener {
+
+    private static int now_break_size = 0;
 
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
@@ -24,6 +27,19 @@ public class BlockBreakListener implements Listener {
                 if (!LocationManager.isBuildArena(loc)) {
                     ChatUtil.sendMessage(player, "範囲外のブロックは破壊できません。");
                     event.setCancelled(true);
+                }
+
+                if (RuleManager.isBreakSizeRule()) {
+                    int can_break_size = RuleManager.getCanBreakSize();
+
+                    now_break_size++;
+                    if (RuleManager.getCanBreakSize() == now_break_size) {
+                        ChatUtil.sendGlobalMessage(
+                                "破壊可能ブロック数を超えてしまいました! (" + can_break_size + "ブロック)　正解は" + GameManager.getBuild().getName() + "でした。\n" +
+                                "次のゲームまでお待ちください。");
+                        now_break_size=0;
+                        GameManager.nextGame();
+                    }
                 }
             }
         }
