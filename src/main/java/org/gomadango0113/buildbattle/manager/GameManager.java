@@ -14,6 +14,7 @@ public class GameManager {
 
     //建築
     private static int build_time;
+    private static final int default_build_time;
     private static Player now_build_player;
     private static Set<OfflinePlayer> build_players;
     private static BuildManager.Build now_build;
@@ -30,6 +31,7 @@ public class GameManager {
 
         status = GameStatus.WAITING;
         build_time = 20;
+        default_build_time = build_time;
 
         world = Bukkit.getWorlds().get(0);
 
@@ -82,6 +84,19 @@ public class GameManager {
                             }
                         }
                         else {
+                            if (now_build != null) {
+                                //ヒント
+                                if (build_time == default_build_time * 0.75) {
+                                    ChatUtil.sendGlobalMessage("文字数ヒント：" + now_build.getName().length());
+                                }
+                                else if (build_time == default_build_time * 0.5) {
+                                    ChatUtil.sendGlobalMessage("難しさヒント：" + now_build.getDifficulty());
+                                }
+                                else if (build_time == default_build_time * 0.25) {
+                                    ChatUtil.sendGlobalMessage("ジャンルヒント：" + now_build.getDifficulty());
+                                }
+                            }
+
                             if (now_build_player != null) {
                                 Location loc = now_build_player.getLocation();
                                 if (!LocationManager.isBuildArena(loc)) {
