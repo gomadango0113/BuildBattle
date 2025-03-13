@@ -78,6 +78,7 @@ public class GameManager {
                                 this.cancel();
                             }
                             else {
+                                PointManager.addPoint(now_build_player.getName(), 1);
                                 ChatUtil.sendGlobalMessage("時間切れです。" + "\n" +
                                         "次のゲームまでお待ちください。");
                                 nextGame();
