@@ -3,6 +3,7 @@ package org.gomadango0113.buildbattle;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gomadango0113.buildbattle.command.GameStartCommand;
+import org.gomadango0113.buildbattle.command.PointCommand;
 import org.gomadango0113.buildbattle.listener.BlockBreakListener;
 import org.gomadango0113.buildbattle.listener.BlockPlaceListener;
 import org.gomadango0113.buildbattle.listener.PlayerChatListener;
@@ -28,6 +29,7 @@ public final class BuildBattle extends JavaPlugin {
 
     private void registerCommand() {
         getCommand("buildbattle_start").setExecutor(new GameStartCommand());
+        getCommand("buildbattle_point").setExecutor(new PointCommand());
     }
 
     private void registerListener() {

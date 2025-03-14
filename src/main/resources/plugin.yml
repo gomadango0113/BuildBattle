@@ -7,3 +7,6 @@ commands:
   buildbattle_start:
     description: ゲームを開始させるコマンド
     permission: buildbattle.command.game_start
+  buildbattle_point:
+    description: ポイントに関するコマンド
+    permission: buildbattle.command.point
