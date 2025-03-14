@@ -75,6 +75,9 @@ public class GameManager {
                         if (build_time == 0) {
                             if (build_players.isEmpty()) {
                                 ChatUtil.sendGlobalMessage("ゲーム終了です。");
+                                ChatUtil.sendGlobalMessage("===ランキング===" + "\n" +
+                                        PointManager.getRankingString() + "\n" +
+                                        "===========");
                                 this.cancel();
                             }
                             else {
@@ -186,6 +189,9 @@ public class GameManager {
         }
         else {
             ChatUtil.sendGlobalMessage("ゲーム終了です。");
+            ChatUtil.sendGlobalMessage("===ランキング===" + "\n" +
+                    PointManager.getRankingString() + "\n" +
+                    "===========");
             task.cancel();
             task = null;
         }
